@@ -5,8 +5,8 @@ resumo na tela e gera um CSV com a projeção dos 12 primeiros meses.
 """
 
 import csv
-from abc import ABC, abstractmethod
 import os
+from abc import ABC, abstractmethod
 
 
 def formatar_moeda(valor):
@@ -212,6 +212,9 @@ class ExportadorCSV:
             escritor.writerow(["mes", "aluguel", "parcela_taxa", "total_mes"])
             for mes, aluguel, parcela, total in projecao:
                 escritor.writerow([mes] + [f"{v:.2f}".replace(".", ",") for v in (aluguel, parcela, total)])
+            # Linha final com o total dos 12 meses
+            totais = [sum(linha[i] for linha in projecao) for i in (1, 2, 3)]
+            escritor.writerow(["TOTAL 12 MESES"] + [f"{v:.2f}".replace(".", ",") for v in totais])
 
 
 # ---------------------------------------------------------------------------
